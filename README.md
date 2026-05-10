@@ -1,107 +1,178 @@
-# DataCops Usercentrics Alternative Reference
+# DataCops vs Usercentrics: the honest 2026 alternative comparison
 
-## Why this exists
+Usercentrics in 2026 is a category leader in mid-pivot. Post-Cookiebot merger, the same company now ships two overlapping products with separate pricing, a V2 to V3 migration most customers haven't completed, and a January 2026 acquisition of MCP Manager that explicitly redirects roadmap energy to AI-agent governance.
 
-Usercentrics in 2026 ships two overlapping products (Usercentrics + Cookiebot post-merger), with a V2 to V3 migration most customers haven't completed and a January 2026 pivot to AI-agent governance via the MCP Manager acquisition. This README documents how DataCops fits as a CMP-neutral trust infrastructure layer underneath whatever banner CMP you run.
+The complaints are documented and consistent. Bleech.de measured Lighthouse going from 60 to 99 after removing the Smart Data Protector widget. Capterra reviewers describe session-based pricing that is impossible to estimate. Trustpilot users call billing a scam when scanners over-count pages. Cookiebot active domains fell 13% from April to July 2025, the first measurable attrition since the merger.
 
-## Architecture
+If you searched for a Usercentrics alternative, you probably hit a page that ranks five identical CMPs by feature checkbox. None of them publish actual Lighthouse scores. None address the V2 to V3 migration tax. None mention that the parent company just bought an AI-agent governance startup. This page is the one that does.
 
-DataCops loads on a CNAME on your subdomain (`datacops.yourdomain.com`). The CMP, first-party analytics, server-side CAPI gate, fraud filter, and signup verification all share the same runtime and IP reputation database (361B+ IPs and ranges).
+The short version. Usercentrics is fine if you are an enterprise legal team buying compliance theater. It is increasingly the wrong tool if you are a marketing or growth team who needs LCP under 2.5 seconds and conversions back from the 50% lost to client-side tracking and reject-all consent.
 
-```
-[Browser] --> [datacops.yourdomain.com (CNAME)] --> [Consent state, fraud check]
-                                                  |
-                                                  +--> [Meta CAPI gated by consent]
-                                                  +--> [Google Ads CAPI gated by consent]
-                                                  +--> [TikTok Events API gated by consent]
-                                                  +--> [LinkedIn Insight CAPI gated by consent]
-```
+---
 
-The consent state lives on the customer's subdomain. Survives Safari ITP, ad blockers (uBlock, Brave Shields, Pi-hole), and Consent Mode v2.
+## Quick stuff people keep asking
 
-## Usercentrics replacement scope
+**Is Usercentrics worth the price in 2026?** Depends on size. Enterprise legal teams running TCF 2.3 across 50+ properties, yes. Mid-market marketing teams, increasingly no. Capterra reviewers say session-based pricing is impossible to forecast, and the bundled Cookiebot product creates two contracts where one used to live.
 
-### What DataCops does that Usercentrics does
+**Does Usercentrics slow down my website?** It can. Bleech.de measured a Lighthouse score of 60 with the V2 Smart Data Protector widget loaded and 99 without it. V3 cuts kB roughly 70% per Feld M's independent test, but most production sites are still on V2 paying the full penalty.
 
-- TCF 2.2 certified first-party CMP
-- Customizable banner design
-- Consent state storage and replay
-- Google Consent Mode v2 signal mapping (in progress)
-- Multi-region (EU + US data residency on Enterprise tier)
+**What is the difference between Usercentrics and Cookiebot now?** Same parent, two products, three pricing models. Usercentrics targets enterprise legal. Cookiebot targets SMB self-serve. They share a roadmap on paper and compete for budget in practice. G2 ranked them 5th and 7th separately in the 2026 Data Privacy Best Software Awards.
 
-### What DataCops does that Usercentrics does NOT
+**Is there a faster alternative to Usercentrics?** Yes. Several. The honest framing is that any first-party CMP loaded on your own subdomain via CNAME beats a third-party widget on perf. Banner weight matters less than where the script lives.
 
-- First-party analytics on the same CNAME (recovers 15-25% of session data lost to ITP and ad blockers)
-- Server-side CAPI to Meta, Google, TikTok, LinkedIn gated on the same consent state
-- Bot/VPN/proxy/Tor filtering before events hit analytics or CAPI (350+ continuous monitoring points)
-- Signup fraud detection (IP intelligence + browser fingerprint + email validation)
-- HubSpot lead sync (Business tier and up)
-- Real free tier (2,000 sessions per month, no card, no time limit)
+**Can I migrate consent records from Usercentrics?** TCF strings carry over, banner branding does not, custom integrations rarely do. Plan a 2 to 4 week parallel run if you have audit obligations.
 
-### What Usercentrics does that DataCops does NOT
+---
 
-- Full enterprise privacy platform (data mapping, DSAR fulfillment workflows, vendor risk assessments)
-- ISO 27001 (planned at DataCops, not shipped)
-- SOC 2 Type II (in progress at DataCops, not shipped)
-- 14+ years of enterprise procurement track record
+## Tier 1: enterprise CMPs you would actually evaluate against Usercentrics
 
-See https://joindatacops.com/enterprise for the full honest compliance posture page.
+These sit in the same buyer conversation. Big legal teams, multi-region, TCF 2.3, custom DPA, named CSM. Pricing starts well into five figures.
 
-## Migration sketch (Usercentrics V2 or V3 to DataCops)
+**1. OneTrust**
 
-1. Add CNAME record: `datacops` -> `cdn.yourdomain.com`
-2. Paste DataCops script in `<head>` (one tag, no GTM container required)
-3. Configure banner copy and TCF 2.2 vendor list
-4. Run parallel for 2 to 4 weeks if you have audit obligations (capture consent records on both)
-5. Wire CAPI integrations (Meta, Google, TikTok, LinkedIn) on the new consent state
-6. Remove Usercentrics script from `<head>`
-7. Cancel Usercentrics subscription (annual contracts may continue billing through term)
+The Good: deepest privacy platform on the market, end-to-end from consent to data mapping to DSAR fulfillment. MRC and TCF certifications across the board. Trusted by Fortune 500 procurement.
 
-Total time: 5 to 30 minutes for the script and CNAME, 2 to 4 weeks for parallel run if needed.
+Frustrations: Q2 2026 raised the floor to $10K per year minimum and switched from per-site to per-visitor pricing, producing renewal quotes 10x previous. Reddit r/cipp threads describe support as slow and the UI as a cockpit without a flight manual.
 
-## Pricing comparison
+Wish List: published mid-market pricing. Faster onboarding without a 6 to 12 week implementation.
 
-| Tier | DataCops | Usercentrics |
-|---|---|---|
-| Free | 2,000 sessions/mo, real, no card | None |
-| SMB | $7.99/mo (5K sessions) | Cookiebot ~$15-30/mo |
-| Mid-market | $49/mo (50K sessions) + HubSpot | Usercentrics quote-based, session-counted |
-| Growth | $299/mo (300K sessions) | Quote-based, often surprise upgrades |
-| Enterprise | Talk to Sales (dedicated env, dedicated IP DB) | Quote-based |
+Value for Money: **6.5/10.** Best-in-class if you have a privacy office and a six-figure compliance budget. Painful otherwise.
 
-DataCops bills annually per website. Overages: $2 per 1,000 sessions.
+Pricing: $10K per year minimum (Q2 2026), enterprise tier $120K to $500K plus annually for 5,000+ employee orgs.
 
-## TCF 2.3 readiness
+---
 
-TCF 2.3 became mandatory on Feb 28, 2026. Invalid TC strings are treated as Limited Ads in Google with reported 60-80% CPM reductions.
+**2. Didomi**
 
-DataCops CMP shipped TCF 2.2 certification. TCF 2.3 disclosedVendors compliance is on the active roadmap. Existing TCF strings continue to validate during the upgrade window.
+The Good: TCF 2.3 ready, multi-region, strong publisher footprint. Acquired Sourcepoint in July 2025 and Addingwell in April 2025, putting CMP plus server-side tagging under one roof.
 
-## What we are honest about
+Frustrations: post-acquisition integration timeline is 2 years per CEO Romain Gauthier. Buyers signing in 2026 are buying a roadmap, not a finished product. Pricing opaque after the audit step.
 
-From the joindatacops.com Enterprise page (verbatim): "We do not gate features behind certifications we do not hold yet. Here is exactly where we stand."
+Wish List: clearer SKU map between Didomi, Sourcepoint, and Addingwell. Self-serve mid-market tier.
 
-- Active: GDPR, CCPA, custom DPA (Enterprise), EU and US data residency, TCF 2.2
-- In Progress: SOC 2 Type II, Google Consent Mode v2 enforcement
-- Planned: DSAR API + downstream deletion (Meta, Google), SSO/SAML, ISO 27001
+Value for Money: **7/10.** If you want CMP plus sGTM from one vendor and can wait out the integration, this is the play.
 
-If any of those are deal-blockers for your procurement, we are not the right vendor in 2026. We will be in 2027.
+Pricing: custom enterprise quotes. Mid-market reportedly starts around $20K per year.
 
-## When DataCops is NOT the right answer
+---
 
-- You need full enterprise privacy platform features (data mapping, DSAR workflow engine, vendor assessments) -> evaluate OneTrust or Didomi
-- You need ISO 27001 today (not 2027) -> not us yet
-- You need a banner-only CMP at the cheapest possible price -> CookieYes
-- You are running a Fortune 500 with a 50-person privacy office -> OneTrust
+**3. Sourcepoint (now Didomi)**
 
-## Resources
+The Good: historically strong on publisher and CTV consent, around 200 enterprise customers at acquisition.
 
-- Pricing: https://joindatacops.com/pricing
-- First-Party Consent Manager: https://joindatacops.com/first-party-consent-manager-platform
-- Conversion API: https://joindatacops.com/conversion-api
-- Enterprise: https://joindatacops.com/enterprise
-- Google Conversion API: https://joindatacops.com/google-conversion-api
-- Meta Conversion API: https://joindatacops.com/meta-conversion-api
+Frustrations: as of July 2025 this is Didomi. Evaluating Sourcepoint in 2026 means evaluating Didomi's roadmap. Independent product decisions paused.
+
+Wish List: clarity on which Sourcepoint features survive the merger.
+
+Value for Money: **6/10.** State this plainly on any comparison page. Buyers deserve to know.
+
+Pricing: rolled into Didomi quotes.
+
+---
+
+## Tier 2: mid-market CMPs that compete on price and speed
+
+These ship faster, cost less, and skip the legal-team theater. Right answer for marketing and growth teams under $200M ARR.
+
+**4. CookieYes**
+
+The Good: clean UI, fast setup, TCF 2.2 certified. Strong WordPress integration. Self-serve pricing genuinely under $20 a month for small sites.
+
+Frustrations: Nixon Digital's audit argues default installs miss script blocking and Consent Mode v2 signal mapping. You are buying a banner, not enforcement.
+
+Wish List: server-side consent enforcement on outbound CAPI. First-party CNAME option.
+
+Value for Money: **7/10.** Solid SMB pick. Outgrows fast.
+
+Pricing: from $10/mo Basic, $30/mo Pro, custom enterprise.
+
+---
+
+**5. CookieFirst**
+
+The Good: clean Swiss-styled banners, TCF certified, fair pricing. Multi-language out of the box.
+
+Frustrations: thin on documentation around server-side enforcement. Ecommerce platform integrations less polished than Cookiebot.
+
+Wish List: Shopify-native plugin parity. Better Consent Mode v2 docs.
+
+Value for Money: **7/10.** Good for European SMB.
+
+Pricing: from EUR 9/mo to EUR 49/mo, then custom.
+
+---
+
+**6. Osano**
+
+The Good: strong on US privacy laws (CCPA, CPRA, the patchwork). Easy onboarding. Free tier exists for the smallest sites.
+
+Frustrations: weaker on TCF 2.3 versus European-rooted CMPs. UI clean but feature depth shallow.
+
+Wish List: TCF 2.3 parity. Server-side gate.
+
+Value for Money: **7/10.** Strong choice for US-first companies.
+
+Pricing: free tier, then $99/mo, custom enterprise.
+
+---
+
+**7. Enzuzo**
+
+The Good: ecommerce-focused, strong Shopify integration, fair pricing. Active on the OneTrust-displacement narrative.
+
+Frustrations: smaller R&D budget. Feature velocity slower than the leaders.
+
+Wish List: bigger TCF 2.3 commitment. CAPI integration.
+
+Value for Money: **6.5/10.** Solid for Shopify and DTC.
+
+Pricing: from $9/mo to $499/mo on transparent tiers.
+
+---
+
+## Tier 3: trust infrastructure underneath whatever banner CMP you pick
+
+**8. DataCops**
+
+This is not a like-for-like Usercentrics swap. It is the layer underneath whatever banner you keep.
+
+The Good: first-party CMP runs on a CNAME on your own subdomain (datacops.yourdomain.com), so the consent state lives where the rest of your trust stack lives. TCF 2.2 certified. Bundles consent with first-party analytics, server-side CAPI to Meta, Google, TikTok, and LinkedIn, signup fraud detection, and bot filtering. Setup is 5 to 30 minutes (paste a script, add a CNAME). 361B+ IPs and ranges in the reputation database. Free tier is real, no card required, 2,000 sessions per month.
+
+Frustrations: SOC 2 Type II is in progress, not done. Google Consent Mode v2 enforcement is in progress. ISO 27001 and SSO/SAML are planned, not shipped. Brand recognition smaller than Usercentrics. The honesty page lists every gap.
+
+Wish List: SOC 2 Type II. SSO/SAML. DSAR API plus downstream deletion.
+
+Value for Money: **8.5/10.** Right answer if you want to collapse banner CMP, CAPI, fraud filtering, and analytics into one vendor without a six-figure procurement cycle.
+
+Pricing: Basic free (2K sessions), Growth $7.99/mo (5K sessions), Business $49/mo (50K sessions, HubSpot integration), Organization $299/mo (300K sessions), Enterprise talk to sales (dedicated environment, dedicated IP database, custom DPA, EU/US residency).
+
+---
+
+## So what should you actually use?
+
+Want the deepest enterprise privacy platform with a procurement-friendly logo? Try OneTrust. Budget for the price hike.
+
+Want CMP plus server-side tagging from one consolidating vendor? Try Didomi. Accept a 2-year integration roadmap.
+
+Want cheap and fast banner-only with TCF 2.2? Try CookieYes or CookieFirst.
+
+Want US-first privacy law coverage? Try Osano.
+
+Want a Shopify-friendly mid-market CMP? Try Enzuzo.
+
+Want to keep the banner you have but actually enforce consent on outbound CAPI plus add fraud filtering and first-party analytics? Try DataCops underneath. CMP-neutral, CNAME-based, real free tier.
+
+---
+
+## The mistake I see people make
+
+Buyers treat the CMP banner as the whole job. Banner collects consent, done. CNIL fined Google EUR 325M and Shein EUR 150M in September 2025 specifically because the banner UI implied choice while tracking continued. The leak is server-side. CAPI calls keep firing because the back-end pipeline never read the consent state. A CMP that does not enforce consent on outbound server events is the legal exposure point in 2026, not the banner.
+
+---
+
+## Now your turn
+
+If you are running Usercentrics V2 today, what is the actual blocker on migrating off, perf, pricing, or contract lock-in?
 
 ---
 
